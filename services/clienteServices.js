@@ -12,6 +12,10 @@ class ClienteServices {
   save(data) {
     return http.post("/cliente/", data);
   }
+
+  getCliente(id) {
+    return http.get(`/cliente/${id}`);
+  }
 }
 
 export default new ClienteServices();

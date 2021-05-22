@@ -36,20 +36,23 @@ export default function Result({ result }) {
               </div>
             </div>
           </div>
-          {/* <div className="px-4 pb-5 sm:px-6">
+          <div className="px-4 pb-5 sm:px-6">
             <h3 className="text-lg leading-6 font-medium text-gray-900">
               Recomendación
             </h3>
-            <p className="mt-1 max-w-2xl text-gray-500">
-            </p>
+            <p className="mt-1 max-w-2xl text-gray-500"></p>
             <div className="p-4 flex sm:items-center flex-col">
               <div className="flex flex-row">
                 <div className="flex-none w-40">
                   <span className="text-gray-400 font-semibold">Banco</span>
                 </div>
                 <div className="flex-none w-80  mr-5">
-                  <span className="font-semibold mr-2 "></span>
-                  <span>{result.capitalFinal}</span>
+                  <span className="font-semibold mr-2 ">
+                    {result.entidadFinanciera.nombre}
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    {result.entidadFinanciera.tipoEntidadFinanciera.descripcion}
+                  </span>
                 </div>
               </div>
               <div className="flex flex-row">
@@ -59,14 +62,18 @@ export default function Result({ result }) {
                   </span>
                 </div>
                 <div className="flex-none w-80  mr-5">
-                  <span className="font-semibold mr-2 "></span>
-                  <span>
-                    {result.recommendation}
+                  <span className="font-semibold mr-2 ">
+                    {result.asesor.nombres} {result.asesor.apellidos}
+                  </span>
+                  -
+                  <span className="text-gray-500 text-sm">
+                    {" "}
+                    {result.asesor.telefono}
                   </span>
                 </div>
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </div>

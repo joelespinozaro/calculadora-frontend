@@ -8,6 +8,10 @@ class AsesorServices {
   save(data) {
     return http.post("/asesor/", data);
   }
+
+  getAsesor(id) {
+    return http.get(`/asesor/${id}`);
+  }
 }
 
 export default new AsesorServices();

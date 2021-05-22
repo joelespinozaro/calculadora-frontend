@@ -1,36 +1,41 @@
 import { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
+import EntidadServices from "../services/entidadServices";
+import CalculadoraServices from "../services/calculadoraServices";
+import AsesorServices from "../services/asesorServices";
+
 export default function FormularioCalculadora({ user, setResult }) {
   const [error, setError] = useState();
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+    const tasa = e.currentTarget.interes.value / 100;
+    const tasaMin = tasa - tasa / 2;
+    const tasaMax = tasa + tasa / 2;
+
+    const dataE = await EntidadServices.getEntidadByTasa(tasaMin, tasaMax);
+    const entidad = await dataE.data;
+
+    const dataA = await AsesorServices.getAsesor(
+      Math.round(Math.random() * (9 - 1) + 1)
+    );
+    const asesor = await dataA.data;
+
     const body = {
-      financialServiceId: 0,
-      recommendationId: 1,
-      clientId: user.clientId,
-      rate: e.currentTarget.interes.value / 100,
-      capital: parseFloat(e.currentTarget.capital.value),
-      period: parseFloat(e.currentTarget.meses.value),
-      typeRate: parseInt(e.currentTarget.tipo.value),
+      solicitudId: 99,
+      clienteId: user.clienteId,
+      tasaInteres: tasa,
+      capital: parseFloat(e.target.capital.value),
+      periodoMeses: parseFloat(e.target.meses.value),
+      tipoInteres: e.target.tipo.value,
+      entidadFinancieraId: entidad[0].entidadFinancieraId,
+      asesorId: asesor.asesorId,
     };
 
-    try {
-      fetch("http://localhost:8090/calculado-interes/api/financial/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      })
-        .then((res) => res.json()) //data.financialServiceId
-        .then((data) =>
-          fetch(
-            `http://localhost:8090/calculado-interes/api/financial/${data.financialServiceId}`
-          )
-            .then((res) => res.json())
-            .then((data) => setResult(data))
-        );
-    } catch (error) {
-      setError(error.data.message);
-    }
+    const dataC = await CalculadoraServices.save(body);
+    const solicitudId = await dataC.data.solicitudId;
+
+    const dataRes = await CalculadoraServices.getCalculo(solicitudId);
+    const solicitud = dataRes.data;
+    setResult(solicitud);
   };
 
   return (
@@ -107,8 +112,8 @@ export default function FormularioCalculadora({ user, setResult }) {
                     name="select"
                     className=" relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                   >
-                    <option value="1">Interés simple</option>
-                    <option value="2" selected>
+                    <option value="SIMPLE">Interés simple</option>
+                    <option value="COMPUESTO" selected>
                       Interés compuesto
                     </option>
                   </select>
