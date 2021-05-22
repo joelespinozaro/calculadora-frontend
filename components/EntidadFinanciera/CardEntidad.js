@@ -1,5 +1,5 @@
 import InputDefault from "../InputDefault";
-import EntidadServices from "../../services/EntidadServices";
+import EntidadServices from "../../services/entidadServices";
 
 export default function CardEntidad({ entidad }) {
   const Submit = (e) => {

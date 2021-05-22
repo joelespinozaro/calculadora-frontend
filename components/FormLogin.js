@@ -1,30 +1,24 @@
+import { data } from "autoprefixer";
 import { useState } from "react";
+import AdminServices from "../services/adminServices";
+import ClienteServices from "../services/clienteServices";
 
 export default function FormLogin({ onClick, setUser }) {
   const [errorMsg, setErrorMsg] = useState("");
   const onSubmit = (e) => {
     e.preventDefault();
-    const email = e.target.email.value;
-    console.log(
-      `http://localhost:8090/calculado-interes/api/client/email/${decodeURIComponent(
-        email
-      )}`
+    const usuario = e.target.email.value;
+    const contrasena = e.target.password.value;
+
+    AdminServices.login(usuario, contrasena).then((data) =>
+      data.data === null
+        ? ClienteServices.login(usuario, contrasena).then((data) =>
+            data.data === null
+              ? setErrorMsg("usuario no existente.")
+              : setUser(data.data)
+          )
+        : setUser(data.data)
     );
-    try {
-      fetch(
-        `http://localhost:8090/calculado-interes/api/client/email/${decodeURIComponent(
-          email
-        )}`,
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => setUser(data));
-    } catch (error) {
-      setErrorMsg(error.data.message);
-    }
   };
 
   return (

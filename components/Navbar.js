@@ -25,7 +25,7 @@ export default function Navbar({ user, setUser }) {
             ) : (
               <span>
                 Hola,
-                <strong> {user.client}</strong>
+                <strong> {user?.nombres || user?.usuario}</strong>
               </span>
             )}
           </div>

@@ -11,10 +11,14 @@ export default function HomeView() {
     <>
       <Navbar setUser={setUser} user={user} />
       {user ? (
-        <div className="min-h-screen bg-gray-200">
-          <FormularioCalculadora user={user} setResult={setResult} />
-          {result && <Result result={result} />}
-        </div>
+        user?.usuario === "admin" ? (
+          <AdminView />
+        ) : (
+          <div className="min-h-screen bg-gray-200">
+            <FormularioCalculadora user={user} setResult={setResult} />
+            {result && <Result result={result} />}
+          </div>
+        )
       ) : (
         <h1 className="text-center mt-10 text-2xl">
           Iniciar sesión para poder utilizar la calculadora

@@ -1,5 +1,5 @@
 import CardEntidad from "./CardEntidad";
-import EntidadServices from "../../services/EntidadServices";
+import EntidadServices from "../../services/entidadServices";
 import { useEffect, useState } from "react";
 export default function MantenimientoEntidad() {
   const [entidades, setEntidades] = useState();
