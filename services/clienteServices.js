@@ -8,6 +8,10 @@ class ClienteServices {
       )}&contrasena=${contrasena}`
     );
   }
+
+  save(data) {
+    return http.post("/cliente/", data);
+  }
 }
 
 export default new ClienteServices();

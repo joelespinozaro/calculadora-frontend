@@ -1,27 +1,20 @@
 import { useState } from "react";
+import ClienteServices from "../services/clienteServices";
 
 export default function FormRegister({ onClick, setUser }) {
   const [errorMsg, setErrorMsg] = useState("");
   const onSubmit = (e) => {
     e.preventDefault();
     const body = {
-      client: e.target.nombre.value,
-      cardIdNumber: e.target.dni.value,
-      address: e.target.email.value,
-      clientId: 0,
+      clienteId: e.target.dni.value,
+      nombres: e.target.nombres.value,
+      apellidos: e.target.apellidos.value,
+      correoElectronico: e.target.email.value,
+      telefono: e.target.telefono.value,
+      contrasena: e.target.password.value,
     };
-    console.log(body);
-    try {
-      fetch("http://localhost:8090/calculado-interes/api/client/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      })
-        .then((res) => res.json())
-        .then((data) => setUser(data));
-    } catch (error) {
-      setErrorMsg(error.data.message);
-    }
+
+    ClienteServices.save(body).then((data) => setUser(data.data));
   };
 
   return (
